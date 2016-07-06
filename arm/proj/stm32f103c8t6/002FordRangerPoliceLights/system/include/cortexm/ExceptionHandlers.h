@@ -20,6 +20,8 @@ extern "C"
 #endif
 
 // External references to cortexm_handlers.c
+  extern void
+  TIM2_IRQHandler (void);
 
   extern void
   Reset_Handler (void);
