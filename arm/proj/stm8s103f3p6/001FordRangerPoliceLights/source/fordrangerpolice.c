@@ -14,32 +14,32 @@
 int main()
 {
     int i = 0;
-	PB_DDR = 0x20;
+    PB_DDR = 0x20;
     PB_CR1 = 0x20;
-	
+
     PD_DDR = PD5 | PD6;
     PD_CR1 = PD5 | PD6;
     do {
         PB_ODR ^= 0x20; // heartbeat
 		
-		PD_ODR = PD5;
+        PD_ODR = PD5;
         for (i = 0; i < 20000; i++) { }
-		for (i = 0; i < 20000; i++) { }
-		PD_ODR = !PD5;
-		for (i = 0; i < 20000; i++) { }
-		PD_ODR = PD5;
-        for (i = 0; i < 30000; i++) { }
-		for (i = 0; i < 30000; i++) { }
-		for (i = 0; i < 30000; i++) { }
-		
-		PD_ODR = PD6;
         for (i = 0; i < 20000; i++) { }
-		for (i = 0; i < 20000; i++) { }
-		PD_ODR = !PD6;
-		for (i = 0; i < 20000; i++) { }
-		PD_ODR = PD6;
+        PD_ODR = !PD5;
+        for (i = 0; i < 20000; i++) { }
+        PD_ODR = PD5;
         for (i = 0; i < 30000; i++) { }
-		for (i = 0; i < 30000; i++) { }
-		for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+
+        PD_ODR = PD6;
+        for (i = 0; i < 20000; i++) { }
+        for (i = 0; i < 20000; i++) { }
+        PD_ODR = !PD6;
+        for (i = 0; i < 20000; i++) { }
+        PD_ODR = PD6;
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
     } while(1);
 }
