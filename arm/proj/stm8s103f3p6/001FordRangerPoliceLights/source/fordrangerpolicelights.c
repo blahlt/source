@@ -1,45 +1,78 @@
+#define DEBUG 0
+
+#if DEBUG
+
 // heartbeat
 #define PB_ODR *(unsigned char*)0x5005
 #define PB_DDR *(unsigned char*)0x5007
 #define PB_CR1 *(unsigned char*)0x5008
 
-// lights
-#define PD_ODR *(unsigned char*)0x500F
-#define PD_DDR *(unsigned char*)0x5011
-#define PD_CR1 *(unsigned char*)0x5012
+#define PB5 1<<5
 
-#define PD5 1<<5
-#define PD6 1<<6
+#endif /* DEBUG */
+
+// lights
+#define PC_ODR *(unsigned char*)0x500A
+#define PC_DDR *(unsigned char*)0x500C
+#define PC_CR1 *(unsigned char*)0x500D
+
+#define PC4 1<<4 // Upper right (BLUE)
+#define PC5 1<<5 // Upper left (RED)
+#define PC6 1<<6 // Lower center (BLUE)
+#define PC7 1<<7 // Lower side (RED)
+
 
 int main()
 {
     int i = 0;
-    PB_DDR = 0x20;
-    PB_CR1 = 0x20;
 
-    PD_DDR = PD5 | PD6;
-    PD_CR1 = PD5 | PD6;
+    #if DEBUG
+
+    PB_DDR = PB5;
+    PB_CR1 = PB5;
+
+    #endif /* DEBUG */
+
+    PC_DDR = PC4 | PC5 | PC6 | PC7;
+    PC_CR1 = PC4 | PC5 | PC6 | PC7;
+    
     do {
-        PB_ODR ^= 0x20; // heartbeat
-		
-        PD_ODR = PD5;
-        for (i = 0; i < 20000; i++) { }
-        for (i = 0; i < 20000; i++) { }
-        PD_ODR = !PD5;
-        for (i = 0; i < 20000; i++) { }
-        PD_ODR = PD5;
-        for (i = 0; i < 30000; i++) { }
-        for (i = 0; i < 30000; i++) { }
-        for (i = 0; i < 30000; i++) { }
+        #if DEBUG
 
-        PD_ODR = PD6;
-        for (i = 0; i < 20000; i++) { }
-        for (i = 0; i < 20000; i++) { }
-        PD_ODR = !PD6;
-        for (i = 0; i < 20000; i++) { }
-        PD_ODR = PD6;
+        PB_ODR ^= PB5; // heartbeat
+
+        #endif /* DEBUG */
+
+        PC_ODR |= PC6;
+
+        PC_ODR |= PC4;
         for (i = 0; i < 30000; i++) { }
         for (i = 0; i < 30000; i++) { }
         for (i = 0; i < 30000; i++) { }
+        PC_ODR &= ~PC4;
+        for (i = 0; i < 10000; i++) { }
+        PC_ODR |= PC4;
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        PC_ODR &= ~PC4;
+
+        PC_ODR &= ~PC6;
+
+        PC_ODR |= PC7;
+
+        PC_ODR |= PC5;
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        PC_ODR &= ~PC5;
+        for (i = 0; i < 10000; i++) { }
+        PC_ODR |= PC5;
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        for (i = 0; i < 30000; i++) { }
+        PC_ODR &= ~PC5;
+
+        PC_ODR &= ~PC7;
     } while(1);
 }
