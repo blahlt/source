@@ -15,12 +15,6 @@
 
 #define RCC_APB2Periph_GPIO_DISCONNECT      RCC_APB2Periph_GPIOD
 
-//#define ADC1_DR_Address                     ((uint32_t)0x4001244C)
-//#define RCC_APB2Periph_GPIO_IOAIN           RCC_APB2Periph_GPIOC
-//#define GPIO_IOAIN                          GPIOC
-//#define GPIO_IOAIN_PIN                      GPIO_Pin_4   /* PC.04 */
-//#define ADC_AIN_CHANNEL                     ADC_Channel_14
-
 /* STM32F103xx Reference Manual
  * 50 page, Table 3. Register boundary addresses (continued)
  * ADC1 peripheral boundary adress - 0x40012400 - 0x400127FF
