@@ -2,7 +2,7 @@
 
 void gpio_init_input(GPIO_TypeDef*, uint16_t);
 void gpio_init_output(GPIO_TypeDef*, uint16_t);
-void delay();
+void sccb_delay();
 
 void sccb_init()
 {
@@ -19,26 +19,26 @@ void sccb_start()
 {
     GPIO_SetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
     GPIO_SetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_ResetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 }
 
 void sccb_stop()
 {
     GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
     GPIO_ResetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_SetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_SetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 }
 
 uint8_t sccb_write(uint8_t data)
@@ -46,7 +46,7 @@ uint8_t sccb_write(uint8_t data)
     for (uint8_t i = 0; i < 8; i++)
     {
         GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-        delay();
+        sccb_delay();
 
         if (data & 0x80)
         {
@@ -57,21 +57,21 @@ uint8_t sccb_write(uint8_t data)
              GPIO_ResetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
         }
         data = data << 1;
-        delay();
+        sccb_delay();
 
         GPIO_SetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-        delay();
+        sccb_delay();
     }
 
     // don't care
     GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_SetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_SetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     uint8_t ack = 1; // error
     if (GPIO_ReadInputDataBit(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin) == Bit_RESET)
@@ -80,7 +80,7 @@ uint8_t sccb_write(uint8_t data)
     }
 
     GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     return ack;
 }
@@ -88,13 +88,13 @@ uint8_t sccb_write(uint8_t data)
 uint8_t sccb_read()
 {
     gpio_init_input(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 
     uint8_t value = 0x00;
     for (uint8_t i = 8; i > 0; i--)
     {
         GPIO_SetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-        delay();
+        sccb_delay();
 
         value = value << 1;
         if (GPIO_ReadInputDataBit(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin))
@@ -103,21 +103,21 @@ uint8_t sccb_read()
         }
 
         GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-        delay();
+        sccb_delay();
     }
 
     gpio_init_output(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 
     // NA
     GPIO_SetBits(GPIO_SCCB_DATA_Port, GPIO_SCCB_DATA_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_SetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     GPIO_ResetBits(GPIO_SCCB_CLOCK_Port, GPIO_SCCB_CLOCK_Pin);
-    delay();
+    sccb_delay();
 
     return value;
 }
@@ -139,7 +139,7 @@ void gpio_init_output(GPIO_TypeDef* gpio, uint16_t pin)
     GPIO_Init(gpio, &GPIO_InitStructure);
 }
 
-void delay()
+void sccb_delay()
 {
     for (int i = 0; i < 400; i++)
     {
