@@ -1,1 +1,10 @@
-test
+C:\.....\ledpulse>make
+sdcc -lstm8 -mstm8 --out-fmt-ihx ledpulse.c
+
+C:\.....\ledpulse>make flash
+C:\stm8flash-master\stm8flash.exe -c stlinkv2 -p stm8s103f3 -w ledpulse.ihx
+Determine FLASH area
+Writing Intel hex file 465 bytes at 0x8000... OK
+Bytes written: 465
+
+C:\Users\win7\Desktop\ledpulse>
