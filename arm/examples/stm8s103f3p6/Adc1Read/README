@@ -1,0 +1,8 @@
+C:\.....\adc1>make
+sdcc -lstm8 -mstm8 --out-fmt-ihx adc1.c
+
+C:\.....\adc1>make flash
+C:\stm8flash-master\stm8flash.exe -c stlinkv2 -p stm8s103f3 -w adc1.ihx
+Determine FLASH area
+Writing Intel hex file 325 bytes at 0x8000... OK
+Bytes written: 325
