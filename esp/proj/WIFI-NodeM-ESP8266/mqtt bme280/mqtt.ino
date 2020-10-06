@@ -158,18 +158,18 @@ long lastMsg = 0;
 // publishes data to the specified resource
 void publish(const char* resource, float data, bool persist)
 {
-  StaticJsonBuffer<128> jsonOutBuffer;
-  JsonObject& root = jsonOutBuffer.createObject();
+  StaticJsonDocument<128> doc;
+  JsonObject root = doc.to<JsonObject>();
   root["channel"] = CHANNEL;
   root["resource"] = resource;
   if (persist) {
     root["write"] = true;
   }
   root["data"] = data;
-
+  
   // Now print the JSON into a char buffer
   char buffer[128];
-  root.printTo(buffer, sizeof(buffer));
+  serializeJson(doc, buffer);
 
   // Create the topic to publish to
   char topic[64];
